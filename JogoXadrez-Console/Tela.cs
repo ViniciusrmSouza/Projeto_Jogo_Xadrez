@@ -13,7 +13,7 @@ namespace JogoXadrez_Console
                 {
                     if (tab.PegaPeca(i,j) != null)
                     {
-                        Console.Write("P ");
+                        Console.Write(tab.PegaPeca(i,j));//pritando tostrring da peça que esta na posição da matriz
                     }
                     else
                     {
