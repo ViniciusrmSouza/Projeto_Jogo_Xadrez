@@ -20,5 +20,11 @@ namespace JogoXadrez_Console.tabuleiro
             Colunas = colunas;
             _pecas = new Peca[linhas, colunas];
         }
+
+        //metodo para acessar a peça
+        public Peca PegaPeca(int linha, int coluna)
+        {
+            return _pecas[linha, coluna];
+        }
     }
 }
