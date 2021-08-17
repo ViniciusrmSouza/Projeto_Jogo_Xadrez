@@ -27,11 +27,44 @@ namespace JogoXadrez_Console.tabuleiro
             return _pecas[linha, coluna];
         }
 
+        public Peca PegaPeca(Posicao pos)
+        {
+            return _pecas[pos.Linha, pos.Coluna];
+        }
+
         public void ColocarPeca(Peca p, Posicao pos)
         {
+            if(existePeca(pos))//verifica se tem alguma peça na posição passada
+            {
+                throw new TabuleiroException("Já existe peça nessa posição");
+            }
             //adicionar a peça na posição
             _pecas[pos.Linha, pos.Coluna] = p;//nova peça nessa posição
             p.Posicao = pos;//adiciando a posição na classe peça
+        }
+
+        //Exceptions
+
+        public bool PosicaoValida(Posicao pos)//metodo para verificar onde foi colocado a peça caso seja fora dos limites retorna false
+        {
+            if (pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public void ValidarPosicao(Posicao pos)//metodo para verificar onde foi colocado a peça caso seja fora dos limites mostra a exceção
+        {
+            if (!PosicaoValida(pos))//verificando se é false
+            {
+                throw new TabuleiroException("Posição inválida!");
+            }
+        }
+        public bool existePeca(Posicao pos)
+        {
+            ValidarPosicao(pos);
+            return PegaPeca(pos) != null;
         }
     }
 }
