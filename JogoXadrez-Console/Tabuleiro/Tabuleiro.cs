@@ -27,7 +27,7 @@ namespace JogoXadrez_Console.tabuleiro
             return _pecas[linha, coluna];
         }
 
-        public Peca PegaPeca(Posicao pos)
+        public Peca PegaPeca(Posicao pos)//sobrecarga
         {
             return _pecas[pos.Linha, pos.Coluna];
         }

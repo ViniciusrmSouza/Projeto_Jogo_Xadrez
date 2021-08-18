@@ -20,12 +20,16 @@ namespace JogoXadrez_Console
                     Console.Write("Digite a Origem: ");
                     Posicao origem = Tela.LerPosicao().toPosition();
 
+                    bool[,] posicoesPossiveis = partida.Tab.PegaPeca(origem).MovimentosPossiveis();
+
+                    Console.Clear();
+                    Tela.ImprimirTabuleiro(partida.Tab,posicoesPossiveis);
+
                     Console.Write("Digite a Origem: ");
                     Posicao destino = Tela.LerPosicao().toPosition();
                     
                     partida.MovimentaPeca(origem, destino);
                 }
-
 
             }
             catch (TabuleiroException tE)
