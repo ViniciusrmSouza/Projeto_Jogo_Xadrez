@@ -17,7 +17,7 @@ namespace JogoXadrez_Console.xadrez
         }
 
         //transforma a posição do xadrez em posição da matriz
-        public Posicao toPosition()
+        public Posicao toPosition()//lembrar de alterar o toPosition para ToPosition seguindo as regras da OOP em c#
         {
             return new Posicao(8 - Linha, Coluna - 'a');//o caractere "a" é um numero inteiro
         }

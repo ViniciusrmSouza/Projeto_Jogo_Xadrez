@@ -34,13 +34,26 @@ namespace JogoXadrez_Console.tabuleiro
 
         public void ColocarPeca(Peca p, Posicao pos)
         {
-            if(existePeca(pos))//verifica se tem alguma peça na posição passada
+            if (existePeca(pos))//verifica se tem alguma peça na posição informada
             {
                 throw new TabuleiroException("Já existe peça nessa posição");
             }
             //adicionar a peça na posição
             _pecas[pos.Linha, pos.Coluna] = p;//nova peça nessa posição
             p.Posicao = pos;//adiciando a posição na classe peça
+        }
+        public Peca RemoverPeca(Posicao pos)
+        {
+            if (PegaPeca(pos) == null)
+            {
+                return null;
+            }
+            //removendo a peça de sua posição
+            Peca pecaRetirada = PegaPeca(pos);
+            pecaRetirada.Posicao = null;
+            _pecas[pos.Linha, pos.Coluna] = null;
+
+            return pecaRetirada;
         }
 
         //Exceptions

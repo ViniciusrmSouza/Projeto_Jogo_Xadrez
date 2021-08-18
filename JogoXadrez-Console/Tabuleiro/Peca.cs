@@ -8,7 +8,7 @@ namespace JogoXadrez_Console.tabuleiro
     {
         public Posicao Posicao { get; set; }
         public Cor Cor { get; protected set; }
-        public int qteMovimentos { get; protected set; }
+        public int QteMovimentos { get; protected set; }
         public Tabuleiro Tab { get; protected set; }
         
         public Peca()
@@ -20,7 +20,12 @@ namespace JogoXadrez_Console.tabuleiro
             Posicao = null;
             Cor = cor;
             Tab = tab;
-            qteMovimentos = 0;
+            QteMovimentos = 0;
+        }
+
+        public void IncrementaQteMovimentos()
+        {
+            QteMovimentos++;
         }
     }
 }
