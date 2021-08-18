@@ -44,7 +44,6 @@ namespace JogoXadrez_Console.tabuleiro
         }
 
         //Exceptions
-
         public bool PosicaoValida(Posicao pos)//metodo para verificar onde foi colocado a peça caso seja fora dos limites retorna false
         {
             if (pos.Linha < 0 || pos.Linha >= Linhas || pos.Coluna < 0 || pos.Coluna >= Colunas)

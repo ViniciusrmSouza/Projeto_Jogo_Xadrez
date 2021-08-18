@@ -7,13 +7,15 @@ namespace JogoXadrez_Console
     {
         public static void ImprimirTabuleiro(Tabuleiro tab)
         {
-            for(int i = 0; i < tab.Linhas; i++)
+            for (int i = 0; i < tab.Linhas; i++)
             {
-                for(int j = 0; j < tab.Colunas; j++)
+                Console.Write(8 - i + " ");
+                for (int j = 0; j < tab.Colunas; j++)
                 {
-                    if (tab.PegaPeca(i,j) != null)
+                    if (tab.PegaPeca(i, j) != null)
                     {
-                        Console.Write(tab.PegaPeca(i,j));//pritando tostrring da peça que esta na posição da matriz
+                        ImprimirPeca(tab.PegaPeca(i, j)); //pritando tostring da peça que esta na posição da matriz
+                        Console.Write(" ");
                     }
                     else
                     {
@@ -21,6 +23,21 @@ namespace JogoXadrez_Console
                     }
                 }
                 Console.WriteLine();
+            }
+            Console.WriteLine("  A B C D E F G H");
+        }
+        public static void ImprimirPeca(Peca peca)
+        {
+            if(peca.Cor == Cor.Branca)
+            {
+                Console.Write(peca);
+            }
+            else
+            {
+                ConsoleColor corPadrao = Console.ForegroundColor;
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.Write(peca);
+                Console.ForegroundColor = corPadrao;
             }
         }
     }
