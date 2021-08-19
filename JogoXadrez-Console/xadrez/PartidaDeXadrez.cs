@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JogoXadrez_Console.tabuleiro;
 using JogoXadrez_Console.xadrez;
 
@@ -13,35 +14,64 @@ namespace JogoXadrez_Console.xadrez
 
         private HashSet<Peca> _pecas;
         private HashSet<Peca> _capturadas;
+        public bool Xeque { get; private set; }
         public PartidaDeXadrez()
         {
             Tab = new Tabuleiro(8, 8);//tabuleiro que vai ser passado para a classe Tela
             Turno = 1;
             JogadorAtual = Cor.Branca;
+            Xeque = false;
             _pecas = new HashSet<Peca>();
             _capturadas = new HashSet<Peca>();
             ColocarPecas();
             Terminada = false;
         }
 
-        public void MovimentaPeca(Posicao origem, Posicao destino)
+        public Peca MovimentaPeca(Posicao origem, Posicao destino)
         {
             Peca peca = Tab.RemoverPeca(origem);//pega a peça que sera movida
             peca.IncrementaQteMovimentos();
             Peca pecaCapturada = Tab.RemoverPeca(destino); //caso haja peça sera removida caso não será null
             Tab.ColocarPeca(peca, destino);//coloca a peça na posição
-            
+
             //passando para o conjunto a peça que foi pega
             if (pecaCapturada != null)
             {
                 _capturadas.Add(pecaCapturada);
             }
+            return pecaCapturada;
+        }
+
+        public void DesfazMovimento(Posicao origem, Posicao destino, Peca pecaCapturada)
+        {
+            Peca p = Tab.RemoverPeca(destino);
+            p.DecrementarQteMovimentos();
+            if (pecaCapturada != null)
+            {
+                Tab.ColocarPeca(pecaCapturada, destino);
+                _capturadas.Remove(pecaCapturada);
+            }
+            Tab.ColocarPeca(p, origem);
         }
 
         //controla o turno e a vez da jogada
         public void RealizaJogada(Posicao origem, Posicao destino)
         {
-            MovimentaPeca(origem, destino);
+            Peca pecaCapturada = MovimentaPeca(origem, destino);
+            if (EstaEmXeque(JogadorAtual))
+            {
+                DesfazMovimento(origem, destino, pecaCapturada);
+                throw new TabuleiroException("Você não pode se colocar em xeque");
+            }
+            if (EstaEmXeque(PecaAdversaria(JogadorAtual)))
+            {
+                Xeque = true;
+
+            }
+            else
+            {
+                Xeque = false;
+            }
             Turno++;
             MudaJogador();
         }
@@ -86,9 +116,9 @@ namespace JogoXadrez_Console.xadrez
         public HashSet<Peca> PecasCapturadas(Cor cor)
         {
             HashSet<Peca> aux = new HashSet<Peca>();
-            foreach(Peca pecasC in _capturadas)
+            foreach (Peca pecasC in _capturadas)
             {
-                if(pecasC.Cor == cor)
+                if (pecasC.Cor == cor)
                 {
                     aux.Add(pecasC);
                 }
@@ -97,10 +127,10 @@ namespace JogoXadrez_Console.xadrez
         }
 
         //retorna as peças em jogo de acordo com sua cor
-        public HashSet<Peca> PecasEmJogo(Cor cor)
+        public HashSet<Peca> PecasEmJogo(Cor cor)//verifica as peças em jogo dada a sua cor
         {
             HashSet<Peca> aux = new HashSet<Peca>();
-            foreach(Peca pecaJ in _pecas)
+            foreach (Peca pecaJ in _pecas)
             {
                 if (pecaJ.Cor == cor)
                 {
@@ -109,6 +139,50 @@ namespace JogoXadrez_Console.xadrez
             }
             aux.ExceptWith(PecasCapturadas(cor));//remove todas as peças que foram capturadas para ficar somente as que estão em jogo
             return aux;
+        }
+
+        //verifica a peça adversaria pela cor
+        private Cor PecaAdversaria(Cor cor)
+        {
+            if (cor == Cor.Branca)
+            {
+                return Cor.Preta;
+            }
+            return Cor.Branca;//
+        }
+
+        private Peca Rei(Cor cor)
+        {
+            foreach (Peca pecaR in PecasEmJogo(cor))
+            {
+                //o "is" verifica se a super classe é uma instancia de uma sub-classe(downcasting)
+                if (pecaR is Rei)
+                {
+                    return pecaR;
+                }
+
+            }
+            return null;
+        }
+
+        public bool EstaEmXeque(Cor cor)
+        {
+            Peca rei = Rei(cor);
+            if (rei == null)
+            {
+                throw new TabuleiroException("Não tem rei da cor " + cor + " no tabuleiro!");
+            }
+
+            foreach (Peca pX in PecasEmJogo(PecaAdversaria(cor)))
+            {
+                bool[,] movPecas = pX.MovimentosPossiveis();
+
+                if (movPecas[rei.Posicao.Linha, rei.Posicao.Coluna])//se algum dos movimentos possiveis das peças puder comer a peça do rei vai dar xeque
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public void ColocarNovaPeca(char coluna, int linha, Peca peca)
