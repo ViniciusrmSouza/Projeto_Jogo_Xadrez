@@ -1,10 +1,46 @@
 ﻿using System;
+using System.Collections.Generic;
 using JogoXadrez_Console.tabuleiro;
 using JogoXadrez_Console.xadrez;
+
 namespace JogoXadrez_Console
 {
     class Tela
     {
+        public static void ImprimirPartida(PartidaDeXadrez partida)
+        {
+            ImprimirTabuleiro(partida.Tab);
+            Console.WriteLine();
+            ImprimirPecasCapturadas(partida);
+            Console.WriteLine();
+            Console.WriteLine("Turno: " + partida.Turno);
+            Console.WriteLine("Jogador atual: " + partida.JogadorAtual.ToString());
+        }
+
+        public static void ImprimirPecasCapturadas(PartidaDeXadrez partida)
+        {
+            Console.WriteLine("Peças capturadas: ");
+            Console.Write("Brancas: ");
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Branca));
+            Console.WriteLine();
+            Console.Write("Pretas: ");
+            ConsoleColor corAtual = Console.ForegroundColor;
+            Console.ForegroundColor = ConsoleColor.Blue;
+            ImprimirConjunto(partida.PecasCapturadas(Cor.Preta));
+            Console.ForegroundColor = corAtual;
+            Console.WriteLine();
+        }
+
+        public static void ImprimirConjunto(HashSet<Peca> conjuntoPecas)
+        {
+            Console.Write("[");
+            foreach (Peca pecaCap in conjuntoPecas)
+            {
+                Console.Write(pecaCap + "");
+            }
+            Console.Write("]");
+        }
+
         public static void ImprimirTabuleiro(Tabuleiro tab)
         {
             for (int i = 0; i < tab.Linhas; i++)
@@ -31,7 +67,7 @@ namespace JogoXadrez_Console
                 for (int j = 0; j < tab.Colunas; j++)
                 {
                     //pintando o fundo nas posições onde é possivel mover a peça
-                    if(posicoesPossiveis[i,j] == true)
+                    if (posicoesPossiveis[i, j] == true)
                     {
                         Console.BackgroundColor = fundoAlterado;
                     }

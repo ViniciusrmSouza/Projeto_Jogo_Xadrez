@@ -1,6 +1,7 @@
 ﻿using System;
 using JogoXadrez_Console.tabuleiro;
 using JogoXadrez_Console.xadrez;
+using System.Collections.Generic;
 
 namespace JogoXadrez_Console
 {
@@ -17,12 +18,8 @@ namespace JogoXadrez_Console
                     try
                     {
                         Console.Clear();//limpar a tela
-                        Tela.ImprimirTabuleiro(partida.Tab);
-
-
-                        Console.WriteLine();
-                        Console.WriteLine("Turno: " + partida.Turno);
-                        Console.WriteLine("Jogador atual: " + partida.JogadorAtual.ToString());
+                        
+                        Tela.ImprimirPartida(partida);
 
                         Console.Write("Digite a Origem: ");
                         Posicao origem = Tela.LerPosicao().toPosition();
@@ -31,6 +28,7 @@ namespace JogoXadrez_Console
                         bool[,] posicoesPossiveis = partida.Tab.PegaPeca(origem).MovimentosPossiveis();
 
                         Console.Clear();
+
                         Tela.ImprimirTabuleiro(partida.Tab, posicoesPossiveis);
 
                         Console.WriteLine();
