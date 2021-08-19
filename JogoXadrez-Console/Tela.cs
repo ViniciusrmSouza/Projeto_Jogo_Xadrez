@@ -14,10 +14,18 @@ namespace JogoXadrez_Console
             ImprimirPecasCapturadas(partida);
             Console.WriteLine();
             Console.WriteLine("Turno: " + partida.Turno);
-            Console.WriteLine("Jogador atual: " + partida.JogadorAtual.ToString());
-            if(partida.Xeque == true)
+            if (!partida.Terminada)
             {
-                Console.WriteLine("XEQUE!");
+                Console.WriteLine("Jogador atual: " + partida.JogadorAtual);
+                if (partida.Xeque == true)
+                {
+                    Console.WriteLine("XEQUE!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("XEQUEMATE!");
+                Console.WriteLine("Vencedor: " + partida.JogadorAtual);
             }
         }
 

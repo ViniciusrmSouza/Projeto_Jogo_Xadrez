@@ -66,14 +66,20 @@ namespace JogoXadrez_Console.xadrez
             if (EstaEmXeque(PecaAdversaria(JogadorAtual)))
             {
                 Xeque = true;
-
             }
             else
             {
                 Xeque = false;
             }
-            Turno++;
-            MudaJogador();
+            if (Xequemate(PecaAdversaria(JogadorAtual)))
+            {
+                Terminada = true;
+            }
+            else
+            {
+                Turno++;
+                MudaJogador();
+            }
         }
 
         public void ValidaPosDeOrigem(Posicao pos)
@@ -185,6 +191,41 @@ namespace JogoXadrez_Console.xadrez
             return false;
         }
 
+        public bool Xequemate(Cor cor)
+        {
+            if (!EstaEmXeque(cor))
+            {
+                return false;
+            }
+            foreach (Peca pecaX in PecasEmJogo(cor))
+            {
+                bool[,] movP = pecaX.MovimentosPossiveis();
+
+                //verificando todos os movimentos possiveis de uma certa peça
+                for (int i = 0; i < Tab.Linhas; i++)
+                {
+                    for (int j = 0; j < Tab.Colunas; j++)
+                    {
+                        if (movP[i, j] == true)
+                        {
+                            Posicao origem = pecaX.Posicao;
+                            Posicao destino = new Posicao(i, j);
+                            Peca pecaCapturada = MovimentaPeca(origem, destino);
+                            bool testeXeque = EstaEmXeque(cor);
+                            DesfazMovimento(origem, destino, pecaCapturada);
+
+                            if (!testeXeque)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+
+            }
+            return true;
+        }
+
         public void ColocarNovaPeca(char coluna, int linha, Peca peca)
         {
             Tab.ColocarPeca(peca, new PosicaoXadrez(coluna, linha).toPosition());
@@ -195,13 +236,12 @@ namespace JogoXadrez_Console.xadrez
         {
             //upcasting
             //Pretas
-            ColocarNovaPeca('a', 8, new Torre(Cor.Preta, Tab));
-            ColocarNovaPeca('h', 8, new Torre(Cor.Preta, Tab));
-            ColocarNovaPeca('d', 8, new Rei(Cor.Preta, Tab));
+            ColocarNovaPeca('b', 8, new Torre(Cor.Preta, Tab));
+            ColocarNovaPeca('a', 8, new Rei(Cor.Preta, Tab));
 
             //Brancas
-            ColocarNovaPeca('a', 1, new Torre(Cor.Branca, Tab));
-            ColocarNovaPeca('h', 1, new Torre(Cor.Branca, Tab));
+            ColocarNovaPeca('h', 7, new Torre(Cor.Branca, Tab));
+            ColocarNovaPeca('c', 1, new Torre(Cor.Branca, Tab));
             ColocarNovaPeca('d', 1, new Rei(Cor.Branca, Tab));
         }
     }
