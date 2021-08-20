@@ -3,15 +3,10 @@ using JogoXadrez_Console.tabuleiro;
 
 namespace JogoXadrez_Console.xadrez
 {
-    class Rei : Peca
+    class Cavalo : Peca
     {
-        public Rei(Cor cor, Tabuleiro tab) : base(cor, tab)
+        public Cavalo(Cor cor, Tabuleiro tab) : base(cor, tab)
         {
-        }
-
-        public override string ToString()
-        {
-            return "R";
         }
 
         public bool PodeMover(Posicao pos)
@@ -26,63 +21,60 @@ namespace JogoXadrez_Console.xadrez
             bool[,] matMovP = new bool[Tab.Linhas, Tab.Colunas];
             Posicao pos = new Posicao(0, 0);
 
-            //acima
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna);//
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 2);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //acima direita
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 1);//
+            pos.DefinirValores(Posicao.Linha - 2, Posicao.Coluna - 1);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //acima esquerda
-            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna - 1);//
+            pos.DefinirValores(Posicao.Linha - 2, Posicao.Coluna + 1);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //baixo 
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna);//
+            pos.DefinirValores(Posicao.Linha - 1, Posicao.Coluna + 2);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //baixo direita
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 1);//
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna + 2);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //baixo esquerda
-            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 1);//
+            pos.DefinirValores(Posicao.Linha + 2, Posicao.Coluna + 1);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //direita
-            pos.DefinirValores(Posicao.Linha, Posicao.Coluna + 1);//
+            pos.DefinirValores(Posicao.Linha + 2, Posicao.Coluna - 1);//
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
-            //esquerda
-            pos.DefinirValores(Posicao.Linha, Posicao.Coluna - 1);//
+            pos.DefinirValores(Posicao.Linha + 1, Posicao.Coluna - 2);
             if (Tab.PosicaoValida(pos) && PodeMover(pos))
             {
                 matMovP[pos.Linha, pos.Coluna] = true;
             }
 
             return matMovP;
+        }
+
+        public override string ToString()
+        {
+            return "C";
         }
     }
 }

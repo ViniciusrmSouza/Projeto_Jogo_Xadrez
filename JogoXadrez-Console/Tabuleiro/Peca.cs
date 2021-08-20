@@ -42,7 +42,7 @@ namespace JogoXadrez_Console.tabuleiro
         //é possivel utilizar de metodo e classe abstratada pois a peça sempre é instanciada com upcasting(rei,torre,peão...)
         public abstract bool[,] MovimentosPossiveis();
 
-        public bool PodeMoverPara(Posicao pos)
+        public bool MovimentoPossivel(Posicao pos)
         {
             return MovimentosPossiveis()[pos.Linha, pos.Coluna];//o metodo retorna uma matriz de bool por isso pode acessar suas posições
         }
